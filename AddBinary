@@ -1,0 +1,47 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Mar 19 10:54:41 2015
+
+@author: ZSHU
+"""
+
+class Solution:
+    def addBinary(self, a,b):
+        a=a[::-1]
+        b=b[::-1]
+        
+        low=min(len(a),len(b))
+        high=max(len(a),len(b))
+        
+        i=0
+        res=[]
+        carry=0
+        
+        while i<low:
+            tmp=int(a[i])+int(b[i])+carry
+            res.append(str(tmp%2))
+            carry=tmp/2
+            i+=1
+       
+        while i<high:
+            if len(a)==high:
+                tmp=int(a[i])+carry
+            else:
+                tmp=int(b[i])+carry  
+            res.append(str(tmp%2))
+            carry=tmp/2
+            i+=1 
+          
+        if carry==1:
+            res.append(str(carry))
+        elif carry>1:
+            res.append([str(carry%2),str(carry/tmp)])
+            
+        res=res[::-1]
+        return "".join(res)
+
+a='11'
+b='111'
+
+aa=Solution()
+aa.addBinary(a,b)
