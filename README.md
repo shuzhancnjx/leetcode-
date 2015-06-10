@@ -1,2 +1,2 @@
 # leetcode-
-using leetcode for my python programming 
+using leetcode for improving python programming 
