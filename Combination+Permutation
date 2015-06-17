@@ -1,0 +1,45 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Jun 17 14:19:56 2015
+
+@author: ZSHU
+"""
+
+# programming algorithm: combination and permuation
+
+class Solution: 
+    
+    def combin(depth, nums):
+        if len(nums)==0: return []
+        elif depth==len(nums)-1:
+            return [[number] for number in nums]
+        else:
+            res=[]
+            for i in nums:
+                for j in combin(depth+1, nums):
+                    res.append([i]+j)
+            return res 
+    
+    def permute(nums):
+        if len(nums)==1:
+            return [nums] 
+        elif len(nums)==0:
+            return []
+        else:
+            res=[]
+            for i in range(len(nums)):
+               res.extend([[nums[i]]+ j for j in permute(nums[:i]+nums[i+1:])])
+            return res 
+                    
+    def combination(self, nums):
+        if len(nums)==0:
+            return 'No Combination'
+        else:
+            depth=0
+            return combin(depth, nums)
+    def permuation (self, nums):
+        if len(nums)==0:
+            return 'No Permuation'
+        else:
+            return permute(nums)
+
