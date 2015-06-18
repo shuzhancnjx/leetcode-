@@ -5,7 +5,7 @@ Created on Wed Jun 17 14:19:56 2015
 @author: ZSHU
 """
 
-# programming algorithm: combination and permuation
+# programming algorithm: combination and permuation, the baseic algorithm 
 
 class Solution: 
     
@@ -43,3 +43,63 @@ class Solution:
         else:
             return permute(nums)
 
+"""
+Created on Wed Jun 17 17:02:05 2015
+
+@author: ZSHU
+"""
+
+# these functions are examples of DFS from leetcode: combinatin sum, trimming the combinations that don't meet the criterion. 
+
+class solution: 
+    
+    def com_sum(self, candidates, target, board, depth, res):
+        if sum(board[:depth])==target and sorted(board[:depth]) not in res:
+            res.append(sorted(board[:depth]))
+            return
+        elif sum(board[:depth])>target or depth>len(board)-1:
+            return 
+        else:
+            for i in range(len(candidates)):
+                board[depth]=candidates[i]
+                self.com_sum(candidates,target, board, depth+1, res)
+        return res
+    
+    def combination(self, candidates, target):
+        if len(candidates)==0:
+            return 'The candidates is empty'
+        elif min(candidates)>target:
+            return 'No Solution'
+        else:
+            board=[0 for i in range(target/min(candidates))]
+            res=self.com_sum(candidates,target,board, 0, [])
+            return res
+
+test=solution()
+test.combination([], 1)
+
+class Solution:
+    def com_sumI(candidates, target, board,depth, res):
+        if sum(board[:depth])==target and sorted(board[:depth]) not in res:
+            res.append(sorted(board[:depth]))
+            return
+        elif sum(board[:depth])>target or len(candidates)==0:
+            return 
+        else:
+            for i in range(len(candidates)):
+                board[depth]=candidates[i]
+                com_sumI(candidates[:i]+candidates[i+1:],target, board, depth+1, res)
+        return res
+        
+    def combinatioinII(self, candidates, target):
+         if len(candidates)==0:
+             return 'The candidates is empty'
+         elif min(candidates)>target:
+             return 'No Solution'
+         else:
+             board=[0 for i in range(len(candidates))]
+             res=com_sumI(candidates, target, board,0,[])
+             return res
+
+test=Solution()
+test.combinatioinII([10,1,2,7,6,1,5 ],7)
