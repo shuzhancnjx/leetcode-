@@ -317,9 +317,149 @@ def Depth(root):
     maxdepth=-1
     mindepth=100**100  
     return mmdepth(root, 0)
-   
+
+"""
+upside down, three methods, iteration, recursive, and traversial 
+"""
+root1=Treenode(1)
+root2=Treenode(2)
+root3=Treenode(3)
+root4=Treenode(4)
+root5=Treenode(5)
+root1.left=root2
+root1.right=root3
+root2.left=root4
+root2.right=root5
 
 
+root=root1
+
+def upDownIII(root):
+    
+    stack=[]
+    while root.left:
+        stack.append(root)
+        root=root.left
+    p=root 
+    
+    while stack:
+        parent=stack.pop()
+        root.left=parent.right
+        root.right=parent 
+        root=root.right
+    root.left, root.right=None, None 
+    
+    return p
+
+def upsideDownI(root):
+    p, parent, parent_right=root, None, None 
+    
+    while p:
+        left=p.left
+        p.left=parent_right
+        parent_right=p.right
+        p.right=parent
+        parent=p
+        p=left
+    
+    return parent 
+
+def upsideDownII(root):
+    
+    def upside(p, parent):
+        if p==None:
+            return parent 
+            
+        ro=upside(p.left, p)
+        if parent:
+            p.left=parent.right
+        else:
+            p.left=None 
+        p.right=parent 
+        return ro
+        
+    return upside(root1, None)
+
+
+def buildInPost(inorder, postorder):
+    
+    if len(inorder)==0:
+        return None
+    else:
+        root=Treenode(postorder[-1])
+        
+        i=0
+        while i<len(inorder):
+            if inorder[i]!=postorder[-1]:
+                i+=1
+            else:
+                break
+            
+        root.left=buildInPost(inorder[:i], postorder[:i])
+        root.right=buildInPost(inorder[i+1:], postorder[i:(len(postorder)-1)])
+        
+        return root
+    
+"""
+invert binary tree by iteration and recursive functions 
+by zhan shu, shuzhancnjx@gmail.com
+
+"""
+
+def invertBinaryTree(root):
+    
+    stack=[]
+    p=root
+    while root or stack:
+        if root:
+            stack.append(root)
+            root=root.left 
+        else:
+            root=stack.pop()
+            left=root.left 
+            root.left=root.right
+            root.right=left
+            root=root.left
+    return p
+
+
+
+           
+root1=Treenode(1)
+root2=Treenode(2)
+root3=Treenode(3)
+root4=Treenode(4)
+root5=Treenode(5)
+root1.left=root2
+root1.right=root3
+root2.left=root4
+root2.right=root5            
+         
+def invert(root):
+    if root.left==None and root.right==None:
+        return root
+    else: 
+        left=invert(root.left)
+        root.left=invert(root.right)
+        root.right=left 
+        return root
+        
+        
+          
+            
+            
+        
+ 
+        
+
+        
+    
+    
+  
+
+      
+        
+        
 
 
 
