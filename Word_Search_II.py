@@ -58,10 +58,86 @@ class Solution:
                                   del lookup[board[i][j]]
                                   potential=lookup.keys()
        return result
-        
+
+"""
+Trie based algorithm, thanks the comments from: 
+    http://bookshadow.com/weblog/2015/05/19/leetcode-word-search-ii/
+"""       
  
 
-                 
+class TrieNode:
+    def __init__(self):
+        self.childs=dict()
+        self.isWord=False 
+
+class Trie:
+    def __init__(self):
+        self.root=TrieNode()
+        
+    def addword(self, word):
+        node=self.root
+        for letter in word:
+            child=node.childs.get(letter)
+            if child==None:
+                child=TrieNode()
+                node.childs[letter]=child
+            node=child
+        node.isWord=True 
+    
+    def deleteword(self, word):
+        node=self.root 
+        temp=[]
+        for letter in word: 
+            temp.append((letter, node))
+            child=node.childs.get(letter)
+            if child==None:
+                return
+            node=child
+            
+        if node.isWord==False:
+            return  
+        if len(node.childs)>0:
+            node.isWord=False
+        else: 
+            for letter, node in reversed(temp):
+                del node.childs[letter]
+                if len(node.childs)>0 or node.isWord:
+                    break 
+        return 
+
+      
+def findWords(board, words):
+
+    
+    def match(i,j,node,word, res):
+        child=node.childs.get(board[i][j])
+        if child==None:
+            return 
+            
+        if child.isWord:
+            res+=[word]
+            trie.deleteword(word) 
+            
+        visited[i][j]=True 
+        for cx, cy in change:
+            x=i+cx
+            y=j+cy
+            if x<len(board) and x>=0 and y<len(board[0]) and y>=0 and not visited[x][y]: 
+               match(x, y, child, word+board[x][y], res)
+        visited[i][j]=False 
+        
+    trie=Trie()
+    for word in words:
+        trie.addword(word)
+        
+    visited=[[False for i in xrange(len(board[0]))] for j in xrange(len(board))]
+    change=zip([1,0,-1,0],[0,1,0,-1])
+    res=[]
+    
+   for i in range(len(board)):
+        for j in range(len(board[0])):
+            match(i,j,trie.root, board[i][j], res)
+   return sorted(res)               
          
                 
          
