@@ -1,0 +1,34 @@
+"""
+Stack based solution to the longest valid parenttheses
+"""
+"""
+Created on Mon Aug 10 19:27:37 2015
+
+@author: zhanshu
+"""
+
+class Solution:
+    # @param {string} s
+    # @return {integer}
+    def longestValidParentheses(self, s):
+        stack,loc,diff=[],[-1],-1
+      
+        for i in range(len(s)):
+            if len(stack)==0 or s[i]=="(":
+                stack.append(s[i])
+                loc.append(i)
+            elif s[i]==")":
+                if stack[-1]=="(":
+                    stack.pop()
+                    loc.pop()
+                elif stack[-1]==")":
+                    stack.append(s[i])
+                    loc.append(i)
+        
+        loc.append(len(s))
+        i=1
+        while i<len(loc):
+            if loc[i]-loc[i-1]-1>diff:
+                diff=loc[i]-loc[i-1]-1
+            i+=1
+        return diff
