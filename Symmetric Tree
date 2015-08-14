@@ -1,0 +1,24 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    # @param {TreeNode} root
+    # @return {boolean}
+    def isSymmetric(self, root):
+        
+        def systemmetric(p, q):
+            if p==None and q==None:
+                return True 
+            elif p==None or q==None:
+                return False 
+            elif p.val!=q.val:
+                return False 
+            else:
+                return systemmetric(p.left, q.right) and systemmetric(p.right, q.left)
+        if root:
+            return systemmetric(root.left, root.right)
+        return True
