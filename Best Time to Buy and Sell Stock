@@ -1,0 +1,20 @@
+"""
+this is an easy one, but i write the code based on the comments for its concision: 
+http://www.cnblogs.com/zuoyuan/p/3765934.html
+"""
+
+class Solution:
+    # @param {integer[]} prices
+    # @return {integer}
+    def maxProfit(self, prices):
+        if len(prices)<=1:
+            return 0
+        
+        minimum,profit=prices[0],0
+        
+        for price in prices:
+            if price<minimum: 
+                minimum=price
+            profit=max(profit, price-minimum)
+        return profit 
+        
