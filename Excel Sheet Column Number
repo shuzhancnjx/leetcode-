@@ -1,0 +1,15 @@
+
+class Solution:
+    # @param {string} s
+    # @return {integer}
+    def titleToNumber(self, s):
+        alpha='ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        dic={}
+        for i in range(0,26):
+            dic[alpha[i]]=i+1
+        
+        s=s[::-1]
+        res=dic[s[0]]
+        for i in range(1,len(s)):
+            res+= dic[s[i]]*(26**i)
+        return res
