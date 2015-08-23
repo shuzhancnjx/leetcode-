@@ -1,0 +1,53 @@
+"""
+time limit exceed
+"""
+class Solution(object):
+    def largestRectangleArea(self, height):
+        """
+        :type height: List[int]
+        :rtype: int
+        """
+        if len(height)==0:
+            return 0
+        if len(height)==1:
+            return height[0]
+        
+        area=0
+        for i in range(len(height)):
+            pl, pr=i, i
+            while pl>=0:
+                if height[pl]>=height[i]:
+                    pl-=1
+                else:
+                    break 
+            while pr<len(height):
+                if height[pr]>=height[i]:
+                    pr+=1
+                else:
+                    break 
+            area=max(area, height[i]*(pr-pl-1))
+        return area
+
+"""
+a better solution from internet comments, using a stack to store the locations with lower height than the current height. 
+"""
+class Solution(object):
+    def largestRectangleArea(self, height):
+        """
+        :type height: List[int]
+        :rtype: int
+        """
+        if len(height)==0:
+            return 0
+            
+        height+=[0]
+        area, index, i=0,[],0
+        while i<len(height):
+            if not index or height[i]>=height[index[-1]]:
+                index.append(i)
+                i+=1
+            else:
+                current=index.pop()
+                area=max(area, height[current]*(i if not index else i-index[-1]-1))
+        return area
+                
