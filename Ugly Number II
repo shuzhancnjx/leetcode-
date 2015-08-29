@@ -1,0 +1,46 @@
+"""
+I attached two solutions, the first one TLEed; and the other one works in a smart way. 
+"""
+class Solution(object):
+    def nthUglyNumber(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        numbers=[1,2,3,4,5]
+        if n<=5:
+            return numbers[n-1]
+        
+        while len(numbers)<n:
+            temp=[]
+            for prime in [2,3,5]:
+                for i in range(len(numbers)/2, len(numbers)-1):
+                    if numbers[i]*prime > numbers[-1]:
+                        temp.append(numbers[i]*prime)
+                        break 
+            numbers.append(min(temp))
+        return numbers[-1]
+
+
+"""
+thanks the comments from: 
+http://bookshadow.com/weblog/2015/08/19/leetcode-ugly-number-ii/
+this approach likes merging three sorted lists. 
+"""
+
+class Solution(object):
+    def nthUglyNumber(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        numbers=[1]
+        i2,i3,i5=0,0,0
+        while len(numbers)<n:
+            m2, m3, m5=numbers[i2]*2,numbers[i3]*3,numbers[i5]*5
+            temp=min(m2, m3,m5)
+            if temp==m2: i2+=1
+            if temp==m3: i3+=1
+            if temp==m5: i5+=1
+            numbers+=[temp]
+        return numbers[-1]
