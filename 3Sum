@@ -1,0 +1,26 @@
+class Solution(object):
+    def threeSum(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        def twosum(s, starting, target, res):
+            dic={}
+            for i in range(len(s)):
+                if dic.get(target-s[i],None)!=None:
+                    temp=sorted([starting, target-s[i], s[i]])
+                    if temp not in res: res.append(temp)
+                dic[s[i]]=i
+        
+        if len(nums)<3:
+            return []
+            
+        res=[]
+        for i in range(len(nums)-2):
+            if nums[i] not in nums[:i]: 
+            """ 
+            this condition was for reducing repeated running, and i did not add this condition for the first time testing and TLE. 
+            """
+                twosum(nums[i+1:],nums[i],-nums[i],res)
+        return res 
+            
