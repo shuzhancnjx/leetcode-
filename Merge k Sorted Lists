@@ -1,0 +1,98 @@
+"""
+TLE, recursive and divide and conquer
+"""
+
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def mergeKLists(self, lists):
+        """
+        :type lists: List[ListNode]
+        :rtype: ListNode
+        """
+        
+        def merge(node1, node2):
+            p=ListNode(0)
+            start=p
+    
+            while node1!=None and node2!=None:
+                if node1.val<=node2.val:
+                    p.next=node1
+                    node1=node1.next
+                else:
+                    p.next=node2
+                    node2=node2.next
+                p=p.next 
+        
+            if node1!=None:
+                p.next=node1
+            if node2!=None:
+                p.next=node2 
+            return start.next 
+            
+        
+        def kmerge(nodes):
+            if len(nodes)<=1:
+                return nodes
+            elif len(nodes)==2:
+                return [merge(nodes[0], nodes[1])]
+            else:
+                
+                temp=[merge(nodes[0], nodes[1])]+kmerge(nodes[2:])
+                return kmerge(temp)
+        
+        if len(lists)<=1:
+            return lists
+        
+        i,count,j=0,0,len(lists)-1
+        while i<j-count+1:
+            while j-count>=0 and  lists[j-count]==None:
+                count+=1
+            if lists[i]==None and lists[j-count]!=None:
+                lists[i], lists[j-count]=lists[j-count],lists[i]
+                count+=1
+            i+=1
+        lists=lists[:j-count+1]  
+       
+        i,j=0,0
+        while i<len(lists) and j<=len(lists):
+            if j<len(lists) and lists[i].val>lists[j].val:
+                lists[i],lists[j]=lists[j],lists[i]
+            elif j==len(lists):
+                i+=1; j=i
+            j+=1
+        
+        return kmerge(lists)
+
+"""
+using the concept of HEAP, the functions heapq.heappush(), heapq.heappop(), heapify()
+"""
+class Solution(object):
+    def mergeKLists(self, lists):
+        """
+        :type lists: List[ListNode]
+        :rtype: ListNode
+        """
+        
+        if len(lists)==0:
+            return []
+        if len(lists)==1:
+            return lists[0]
+        
+        hp=[]
+        for node in lists:
+            if node:
+                hp.append((node.val, node))
+        heapq.heapify(hp); p=ListNode(0); start=p
+        while hp:
+            current=heapq.heappop(hp)
+            p.next=current[1]; p=p.next
+            temp=current[1].next
+            if temp:
+                heapq.heappush(hp, (temp.val, temp))
+        return start.next
+
