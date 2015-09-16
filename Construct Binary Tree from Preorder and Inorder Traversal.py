@@ -1,12 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Sep 15 09:27:16 2015
+Created on Wed Sep 16 09:35:58 2015
 
 @author: ZSHU
-"""
-
-"""
-solution I: recursive 
 """
 
 # Definition for a binary tree node.
@@ -24,17 +20,15 @@ class Solution(object):
         :rtype: TreeNode
         """
         def build(pre, inorder):
-            if len(pre)==0:
-                return None 
+            if len(inorder)==0:
+                return  
          
             root=TreeNode(pre[0])
-     
-            i=0
-            while inorder[i]!=pre[0]:
-                i+=1
-         
-            root.left=build(pre[1:i+1], inorder[:i])
-            root.right=build(pre[i+1:], inorder[i+1:])
+            index=inorder.index(pre[0])
+            pre.pop(0)
+            
+            root.left=build(pre, inorder[:index])
+            root.right=build(pre, inorder[index+1:])
             return root
         
         return build(preorder, inorder)
