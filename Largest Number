@@ -1,0 +1,33 @@
+class Solution(object):
+    def largestNumber(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: str
+        """
+        dic={}
+        for number in nums:
+            temp=str(number)
+            if dic.get(temp[0],[])==[]:
+                dic[temp[0]]=[temp]
+            else:
+                dic[temp[0]]+=[temp]
+                
+        res=''
+        for alpha in '9876543210':
+            if dic.get(alpha,None)!=None:
+                tem=dic[alpha]
+                if len(tem)==1:
+                    res+=tem[0]
+                else:
+                    tem.sort(); i=len(tem)-1
+                    while i>=0:
+                        j=1
+                        while j<=i:
+                            if int(tem[j]+tem[j-1])<int(tem[j-1]+tem[j]):
+                                tem[j-1],tem[j]=tem[j],tem[j-1]
+                            j+=1
+                        res+=tem[i]; i-=1
+        
+        if set(res)=={'0'}: return '0'                 
+        return res 
+            
