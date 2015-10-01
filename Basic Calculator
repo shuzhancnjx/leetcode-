@@ -1,0 +1,53 @@
+class Solution(object):
+    def calculate(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        def cal(nums):
+            stack=[]; i=0
+            while i<len(nums):
+                if str(nums[i]) not in "+-":
+                    stack.append(nums[i])
+                elif nums[i]=="+":
+                    i+=1; stack.append(int(stack.pop())+int(nums[i]))
+                elif nums[i]=="-":
+                    i+=1; stack.append(int(stack.pop())-int(nums[i]))
+                i+=1
+            return int(stack[0])
+
+        stack=[]; i=0
+        while i<len(s):
+            if s[i] not in '+- ()':
+                j=i
+                while j<len(s) and s[j] not in '+- ()':
+                    j+=1
+                stack.append(s[i:j])
+                i=j-1
+            elif s[i] in "+-()":
+                stack.append(s[i])
+            i+=1
+            
+        i=0;stack1=[]
+        while i<len(stack):
+            if stack[i]in"(-+":
+                stack1.append(stack[i])
+            elif stack[i].isdigit() :
+                if stack1!=[] and stack1[-1]== "+" :
+                    stack1.pop()
+                    stack1.append(int(stack[i])+int(stack1.pop()))
+                elif stack1!=[] and stack1[-1]=='-':
+                    stack1.pop()
+                    stack1.append(int(stack1.pop())-int(stack[i]))
+                else:
+                    stack1.append(stack[i])
+            elif stack[i]==")":
+                temp=[stack1.pop()];stack1.pop();
+                while stack1!=[] and str(stack1[-1]) in "+-":
+                    temp.insert(0, stack1.pop())
+                    temp.insert(0, stack1.pop())
+
+                stack1.append(cal(temp))   
+            i+=1
+            
+        return int(stack1[0])
