@@ -1,0 +1,25 @@
+class Solution(object):
+    def copyRandomList(self, head):
+        """
+        :type head: RandomListNode
+        :rtype: RandomListNode
+        """
+        if head==None: return 
+        stack={};que=[head]
+        
+        while que:
+            curr=que.pop(0)
+            if not stack.has_key(curr.label):
+                stack[curr.label]=RandomListNode(curr.label)
+            
+            if curr.next:
+                if not stack.has_key(curr.next.label):
+                    que.append(curr.next)
+                    stack[curr.next.label]=RandomListNode(curr.next.label)
+                stack[curr.label].next=stack[curr.next.label]
+            if curr.random:
+                if not stack.has_key(curr.random.label):
+                    que.append(curr.random)
+                    stack[curr.random.label]=RandomListNode(curr.random.label)
+                stack[curr.label].random=stack[curr.random.label]
+        return stack[head.label]
